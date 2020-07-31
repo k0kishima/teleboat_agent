@@ -33,5 +33,7 @@ module App
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    config.x.application_token = ENV.fetch('TELEBOAT_AGENT_API_APPLICATION_TOKEN') { '*****' }
   end
 end
