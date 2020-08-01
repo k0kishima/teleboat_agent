@@ -38,5 +38,9 @@ module App
     config.hosts << '.boatrace-docker_default'
 
     config.x.application_token = ENV.fetch('TELEBOAT_AGENT_API_APPLICATION_TOKEN') { '*****' }
+
+    config.x.teleboat_member_number = ENV.fetch('TELEBOAT_MEMBER_NUMBER') { '*****' }
+    config.x.teleboat_pin = ENV.fetch('TELEBOAT_PIN') { '*****' }
+    config.x.teleboat_authorization_password = ENV.fetch('TELEBOAT_AUTHORIZATION_PASSWORD') { '*****' }
   end
 end
