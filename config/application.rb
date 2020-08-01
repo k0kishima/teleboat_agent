@@ -42,5 +42,6 @@ module App
     config.x.teleboat_member_number = ENV.fetch('TELEBOAT_MEMBER_NUMBER') { '*****' }
     config.x.teleboat_pin = ENV.fetch('TELEBOAT_PIN') { '*****' }
     config.x.teleboat_authorization_password = ENV.fetch('TELEBOAT_AUTHORIZATION_PASSWORD') { '*****' }
+    config.x.teleboat_authorization_number_of_mobile = ENV.fetch('TELEBOAT_AUTHORIZATION_NUMBER_OF_MOBILE') { '*****' }
   end
 end
