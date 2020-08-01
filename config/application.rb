@@ -34,6 +34,9 @@ module App
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
+    config.hosts << '.teleboat-agent'
+    config.hosts << '.boatrace-docker_default'
+
     config.x.application_token = ENV.fetch('TELEBOAT_AGENT_API_APPLICATION_TOKEN') { '*****' }
   end
 end
