@@ -3,14 +3,22 @@ module Api
     class TicketsController < ::Api::V1i::ApplicationController
       def votes
         client = Slack::Web::Client.new
+        date = race_params.symbolize_keys.fetch(:date).to_date
+        stadium_tel_code = race_params.symbolize_keys.fetch(:stadium_tel_code)
+        race_number = race_params.symbolize_keys.fetch(:number)
+
+        if false && date == Date.today
+          VoteTicketsService.call(stadium_tel_code: stadium_tel_code, race_number: race_number, odds: odds)
+        end
 
         text = "[Voting]\n"
-        text += "SP: https://www.boatrace.jp/owsp/sp/race/raceindex?hd=#{race_params[:date].to_date.strftime('%Y%m%d')}&jcd=#{format('%02d', race_params[:stadium_tel_code])}##{race_params[:number]}\n"
-        text += "PC: https://boatrace.jp/owpc/pc/race/racelist?rno=#{race_params[:number]}&jcd=#{format('%02d', race_params[:stadium_tel_code])}&hd=#{race_params[:date].to_date.strftime('%Y%m%d')}\n"
+        text += "* this is simulation(did not bet actually) \n" if date != Date.today
+        text += "SP: https://www.boatrace.jp/owsp/sp/race/raceindex?hd=#{date.strftime('%Y%m%d')}&jcd=#{format('%02d', stadium_tel_code)}##{race_number}\n"
+        text += "PC: https://boatrace.jp/owpc/pc/race/racelist?rno=#{race_number}&jcd=#{format('%02d', stadium_tel_code)}&hd=#{date.to_date.strftime('%Y%m%d')}\n"
         text += "\n"
         text += "Vote below odds \n"
-        odds_params[:odds].each do |odds|
-          text += "#{odds[:number]} * #{odds[:quantity]}\n"
+        odds_params.symbolize_keys[:odds].each do |odds|
+          text += "#{odds.symbolize_keys[:number]} * #{odds[:quantity]}\n"
         end
         text += "\n"
 
