@@ -3,22 +3,27 @@ module Api
     class TicketsController < ::Api::V1i::ApplicationController
       def votes
         client = Slack::Web::Client.new
-        date = race_params.symbolize_keys.fetch(:date).to_date
-        stadium_tel_code = race_params.symbolize_keys.fetch(:stadium_tel_code)
-        race_number = race_params.symbolize_keys.fetch(:number)
-
-        if false && date == Date.today
-          VoteTicketsService.call(stadium_tel_code: stadium_tel_code, race_number: race_number, odds: odds)
-        end
+        date = race_params.fetch(:date).to_date
+        stadium_tel_code = race_params.fetch(:stadium_tel_code)
+        race_number = race_params.fetch(:number)
+        odds = odds_params[:odds]
 
         text = "[Voting]\n"
-        text += "* this is simulation(did not bet actually) \n" if date != Date.today
+        # TODO:
+        # production 環境だったら投票を行うとかそういう制御を入れたい
+        if date == Time.zone.today
+          VoteTicketsService.call(stadium_tel_code: stadium_tel_code, race_number: race_number, odds: odds)
+          text += "⚠️ this is not simulation. actually having betting. \n\n"
+        else
+          text += "ℹ️ this is simulation(did not bet actually) \n"
+        end
+
         text += "SP: https://www.boatrace.jp/owsp/sp/race/raceindex?hd=#{date.strftime('%Y%m%d')}&jcd=#{format('%02d', stadium_tel_code)}##{race_number}\n"
-        text += "PC: https://boatrace.jp/owpc/pc/race/racelist?rno=#{race_number}&jcd=#{format('%02d', stadium_tel_code)}&hd=#{date.to_date.strftime('%Y%m%d')}\n"
+        text += "PC: https://boatrace.jp/owpc/pc/race/racelist?rno=#{race_number}&jcd=#{format('%02d', stadium_tel_code)}&hd=#{date.strftime('%Y%m%d')}\n"
         text += "\n"
         text += "Vote below odds \n"
-        odds_params.symbolize_keys[:odds].each do |odds|
-          text += "#{odds.symbolize_keys[:number]} * #{odds[:quantity]}\n"
+        odds.each do |odds|
+          text += "#{odds[:number]} * #{odds[:quantity]}\n"
         end
         text += "\n"
 
