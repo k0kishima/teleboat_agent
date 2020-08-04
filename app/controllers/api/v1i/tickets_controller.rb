@@ -12,6 +12,10 @@ module Api
         # TODO:
         # production 環境だったら投票を行うとかそういう制御を入れたい
         if date == Time.zone.today
+          # TODO:
+          # シリアルで処理する必要あるか？
+          # 投票終わるまで待って投票が完了したことをレスポンスするよりは、投票処理の委譲を受け付けたかだけすぐレスポンスした方がいいのでは？
+          # （投票のエラーは別途通知するとして）
           VoteTicketsService.call(stadium_tel_code: stadium_tel_code, race_number: race_number, odds: odds)
           text += "⚠️ this is not simulation. actually having betting. \n\n"
         else
