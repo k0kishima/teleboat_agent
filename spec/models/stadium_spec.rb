@@ -11,7 +11,7 @@ RSpec.describe Stadium, type: :model do
     end
 
     context 'when tel_code less than 1' do
-      let(:stadium) { Stadium.new(tel_code: 25) }
+      let(:stadium) { Stadium.new(tel_code: 0) }
 
       it { is_expected.to be_invalid }
     end
