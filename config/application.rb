@@ -39,6 +39,7 @@ module App
 
     config.hosts << '.teleboat-agent'
     config.hosts << '.boatrace-docker_default'
+    config.hosts << '.host.docker.internal'
 
     config.x.application_token = ENV.fetch('TELEBOAT_AGENT_API_APPLICATION_TOKEN') { '*****' }
 
