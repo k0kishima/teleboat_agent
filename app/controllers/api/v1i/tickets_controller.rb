@@ -11,7 +11,6 @@ module Api
         odds = odds_params[:odds]
 
         VoteTicketsService.call(stadium_tel_code: stadium_tel_code, race_number: race_number, odds: odds)
-        NotifyVotingService.call(stadium_tel_code: stadium_tel_code, race_number: race_number, odds: odds)
 
         render json: { success: true }
       end
